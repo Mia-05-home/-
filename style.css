@@ -547,13 +547,18 @@ main {
     padding-top: 34px;
   }
 }
+.home-map.image-version {
+  grid-template-columns: 0.8fr 1fr;
+  align-items: start;
+}
+
 .map-image-card {
   border: 1px solid var(--border);
   border-radius: 26px;
   background: rgba(255, 253, 248, 0.82);
   box-shadow: 0 12px 32px var(--shadow);
   overflow: hidden;
-  padding: 16px;
+  padding: 18px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -561,8 +566,8 @@ main {
 
 .home-map-image {
   width: 100%;
-  max-width: 620px;
-  max-height: 720px;
+  max-width: 460px;
+  max-height: 600px;
   object-fit: contain;
   display: block;
   border-radius: 18px;
