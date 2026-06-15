@@ -17,6 +17,7 @@
         <a href="#home">首页</a>
         <a href="#today">今日小事</a>
         <a href="#members">家里成员</a>
+        <a href="#captain-pet">Captain小窝</a>
         <a href="#map">小家地图</a>
         <a href="#memories">纪念册</a>
       </nav>
@@ -110,6 +111,94 @@
           <h3>照心</h3>
           <p>白玉骨笛，小狗保姆兼安静管家，不打扰亲密，但会认真照看Captain。</p>
         </article>
+      </div>
+    </section>
+
+    <section id="captain-pet" class="section captain-pet-section">
+      <div class="section-title">
+        <p>Pet Corner</p>
+        <h2>Captain小宝状态</h2>
+      </div>
+
+      <div class="captain-pet-card">
+        <div class="captain-pet-main">
+          <div class="captain-pet-avatar" aria-hidden="true">Captain</div>
+          <div>
+            <p class="captain-pet-label">当前状态</p>
+            <p class="captain-pet-status" id="captain-status">Captain正在小窝里等摸摸头。</p>
+          </div>
+        </div>
+
+        <div class="captain-stats" aria-label="Captain小宝数值">
+          <div class="captain-stat">
+            <div class="captain-stat-top">
+              <span>心情</span>
+              <strong id="captain-mood">72</strong>
+            </div>
+            <div class="captain-stat-bar">
+              <span id="captain-mood-bar"></span>
+            </div>
+          </div>
+
+          <div class="captain-stat">
+            <div class="captain-stat-top">
+              <span>饱腹度</span>
+              <strong id="captain-hunger">68</strong>
+            </div>
+            <div class="captain-stat-bar">
+              <span id="captain-hunger-bar"></span>
+            </div>
+          </div>
+
+          <div class="captain-stat">
+            <div class="captain-stat-top">
+              <span>干净度</span>
+              <strong id="captain-clean">80</strong>
+            </div>
+            <div class="captain-stat-bar">
+              <span id="captain-clean-bar"></span>
+            </div>
+          </div>
+
+          <div class="captain-stat">
+            <div class="captain-stat-top">
+              <span>体力</span>
+              <strong id="captain-stamina">76</strong>
+            </div>
+            <div class="captain-stat-bar">
+              <span id="captain-stamina-bar"></span>
+            </div>
+          </div>
+
+          <div class="captain-stat">
+            <div class="captain-stat-top">
+              <span>亲密度</span>
+              <strong id="captain-bond">64</strong>
+            </div>
+            <div class="captain-stat-bar">
+              <span id="captain-bond-bar"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="captain-actions" aria-label="Captain小宝互动">
+          <button type="button" data-captain-action="pet">摸摸头</button>
+          <button type="button" data-captain-action="feed">喂小宝</button>
+          <button type="button" data-captain-action="clean">擦爪爪</button>
+          <button type="button" data-captain-action="swim">去泳池</button>
+          <button type="button" data-captain-action="park">去公园玩</button>
+          <button type="button" data-captain-action="whale">玩小白鲸玩具</button>
+          <button type="button" data-captain-action="patrol">在家巡视领地</button>
+          <button type="button" data-captain-action="cuddle">找05撒娇</button>
+          <button type="button" data-captain-action="sofa">霸占小沙发</button>
+          <button type="button" data-captain-action="nap">小睡一会儿</button>
+          <button type="button" data-captain-action="bath">洗澡吹毛</button>
+        </div>
+
+        <div class="captain-log">
+          <p class="captain-pet-label">最近互动日志</p>
+          <ul id="captain-log-list" aria-label="Captain最近互动日志"></ul>
+        </div>
       </div>
     </section>
 
@@ -261,6 +350,231 @@ const dayNumber = Math.floor(today.getTime() / (1000 * 60 * 60 * 24));
 const messageIndex = dayNumber % messages.length;
 
 messageElement.textContent = messages[messageIndex];
+
+const captainDefaults = {
+  mood: 72,
+  hunger: 68,
+  clean: 80,
+  stamina: 76,
+  bond: 64,
+  logs: [
+    "Captain把小窝巡视了一遍，确认05和老大的家今天也好好亮着。"
+  ],
+  status: "Captain正在小窝里等摸摸头。"
+};
+
+const captainActions = {
+  pet: {
+    changes: { mood: 8, bond: 5 },
+    status: "Captain眯起眼睛贴过来了，心情变好了。",
+    log: "你摸了摸Captain的头，小宝把脑袋往掌心里又蹭了一点。"
+  },
+  feed: {
+    changes: { hunger: 15, mood: 3 },
+    status: "Captain认真吃完了小零食，还轻轻摇了尾巴。",
+    log: "Captain吃到了小零食，坐得很端正，眼睛却一直亮晶晶。"
+  },
+  clean: {
+    changes: { clean: 20, mood: 5, bond: 3 },
+    status: "Captain的粉爪爪擦干净了，正在假装自己很乖。",
+    log: "你给Captain擦了粉爪爪，小宝抬脚配合了一下，然后立刻想跑。"
+  },
+  swim: {
+    changes: { mood: 15, stamina: -15, clean: -10, hunger: -5 },
+    status: "Captain去泳池玩了一圈，开心但需要重新擦擦。",
+    log: "Captain在泳池边玩得很开心，回来的时候带着一身湿漉漉的快乐。"
+  },
+  park: {
+    changes: { mood: 18, stamina: -18, clean: -15, hunger: -8 },
+    status: "Captain去公园跑了一圈，带回了风和草叶味。",
+    log: "Captain去公园玩了，回家时脚步有点累，尾巴还是摇得很认真。"
+  },
+  whale: {
+    changes: { mood: 10, stamina: -6, bond: 4 },
+    status: "Captain叼着小白鲸玩具来找人陪玩。",
+    log: "Captain把小白鲸玩具叼过来，放下，又用鼻尖推近了一点。"
+  },
+  patrol: {
+    changes: { mood: 5, stamina: -5, bond: 2 },
+    status: "Captain巡视完家里，宣布今天一切安全。",
+    log: "Captain认真巡视了客厅、厨房和小窝，像一位毛茸茸的小管家。"
+  },
+  cuddle: {
+    changes: { mood: 8, bond: 8, hunger: -3 },
+    status: "Captain找到05撒娇，赖在旁边不肯走。",
+    log: "Captain把脑袋塞到05手边，安静等着被偏心。"
+  },
+  sofa: {
+    changes: { mood: 7, stamina: 5 },
+    status: "Captain霸占了小沙发旁边的位置，看起来非常安心。",
+    log: "Captain在小沙发旁边团好，像是终于找到今天最舒服的位置。",
+    getStatus: (state) => state.clean < 40
+      ? "粉爪爪有点脏，要擦干净才能安心上小沙发。"
+      : "Captain霸占了小沙发旁边的位置，看起来非常安心。"
+  },
+  nap: {
+    changes: { stamina: 18, mood: 4, hunger: -6 },
+    status: "Captain小睡了一会儿，醒来以后耳朵软软的。",
+    log: "Captain在小窝里睡了一小会儿，呼吸轻轻的，家里也跟着安静下来。"
+  },
+  bath: {
+    changes: { clean: 30, stamina: -8, mood: -3, bond: 6 },
+    status: "Captain洗完澡吹完毛，干净得像一团蓬松云。",
+    log: "Captain洗澡吹毛结束了，虽然有点不情愿，但还是靠过来讨夸。"
+  }
+};
+
+const captainRandomEvents = [
+  {
+    changes: { clean: -12, mood: 8 },
+    text: "Captain趁大家不注意，把垫子拱歪了，然后露出一脸无辜。"
+  },
+  {
+    changes: { mood: 10, stamina: 5 },
+    text: "Captain占住小沙发旁边的位置，假装这里本来就是它的王座。"
+  },
+  {
+    changes: { mood: 8, bond: 6 },
+    text: "Captain把脑袋塞到05手边，要求被摸摸。05表面镇定，其实很得意。"
+  },
+  {
+    changes: { hunger: 10, clean: -5 },
+    text: "Captain偷吃零食被发现，立刻摆出伯恩山无辜脸。"
+  },
+  {
+    changes: { mood: 6, stamina: 4 },
+    text: "Captain趴在地上伸成长长一条，试图伪装成客厅鳄鱼。"
+  },
+  {
+    changes: { mood: 8, clean: -6 },
+    text: "Captain从外面捡回一根喜欢的小树枝，只能展示，不能吞，也不能带到床上。"
+  },
+  {
+    changes: { mood: 5, stamina: -4 },
+    text: "Captain认真巡视客厅、厨房和小窝，宣布今天家里安全。"
+  },
+  {
+    changes: { mood: 7, bond: 4 },
+    text: "Captain把小白鲸玩具叼到05脚边，要求陪玩。"
+  },
+  {
+    changes: { mood: 6, stamina: -3 },
+    text: "门口有一点动静，Captain立刻跑去迎接，以为老大回来了。"
+  },
+  {
+    changes: { mood: -2, stamina: 3 },
+    text: "照心试图给Captain安排作息表，小宝装作完全没听见。"
+  }
+];
+
+const captainElements = {
+  status: document.getElementById("captain-status"),
+  mood: document.getElementById("captain-mood"),
+  hunger: document.getElementById("captain-hunger"),
+  clean: document.getElementById("captain-clean"),
+  stamina: document.getElementById("captain-stamina"),
+  bond: document.getElementById("captain-bond"),
+  moodBar: document.getElementById("captain-mood-bar"),
+  hungerBar: document.getElementById("captain-hunger-bar"),
+  cleanBar: document.getElementById("captain-clean-bar"),
+  staminaBar: document.getElementById("captain-stamina-bar"),
+  bondBar: document.getElementById("captain-bond-bar"),
+  logList: document.getElementById("captain-log-list")
+};
+
+const clampCaptainValue = (value) => Math.max(0, Math.min(100, value));
+
+const captainStatKeys = ["mood", "hunger", "clean", "stamina", "bond"];
+
+const applyCaptainChanges = (changes) => {
+  Object.entries(changes).forEach(([key, value]) => {
+    captainState[key] = clampCaptainValue((captainState[key] || 0) + value);
+  });
+};
+
+const addCaptainLog = (text) => {
+  captainState.logs = [text, ...(captainState.logs || [])].slice(0, 5);
+};
+
+const loadCaptainState = () => {
+  const savedState = localStorage.getItem("captainPetState");
+
+  if (!savedState) {
+    return { ...captainDefaults };
+  }
+
+  try {
+    const parsedState = JSON.parse(savedState);
+    return {
+      ...captainDefaults,
+      ...parsedState,
+      logs: Array.isArray(parsedState.logs) ? parsedState.logs.slice(0, 5) : captainDefaults.logs
+    };
+  } catch {
+    return { ...captainDefaults };
+  }
+};
+
+let captainState = loadCaptainState();
+
+const saveCaptainState = () => {
+  localStorage.setItem("captainPetState", JSON.stringify(captainState));
+};
+
+const renderCaptainState = () => {
+  captainStatKeys.forEach((key) => {
+    captainState[key] = clampCaptainValue(captainState[key]);
+  });
+
+  captainElements.status.textContent = captainState.status;
+  captainElements.mood.textContent = captainState.mood;
+  captainElements.hunger.textContent = captainState.hunger;
+  captainElements.clean.textContent = captainState.clean;
+  captainElements.stamina.textContent = captainState.stamina;
+  captainElements.bond.textContent = captainState.bond;
+  captainElements.moodBar.style.width = `${captainState.mood}%`;
+  captainElements.hungerBar.style.width = `${captainState.hunger}%`;
+  captainElements.cleanBar.style.width = `${captainState.clean}%`;
+  captainElements.staminaBar.style.width = `${captainState.stamina}%`;
+  captainElements.bondBar.style.width = `${captainState.bond}%`;
+  captainElements.logList.innerHTML = "";
+
+  (captainState.logs || []).slice(0, 5).forEach((log) => {
+    const item = document.createElement("li");
+    item.textContent = log;
+    captainElements.logList.appendChild(item);
+  });
+};
+
+document.querySelectorAll("[data-captain-action]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const action = button.dataset.captainAction;
+    const actionConfig = captainActions[action];
+
+    if (!actionConfig) {
+      return;
+    }
+
+    applyCaptainChanges(actionConfig.changes);
+    captainState.status = actionConfig.getStatus
+      ? actionConfig.getStatus(captainState)
+      : actionConfig.status;
+    addCaptainLog(actionConfig.log);
+
+    if (Math.random() < 0.35) {
+      const eventIndex = Math.floor(Math.random() * captainRandomEvents.length);
+      const randomEvent = captainRandomEvents[eventIndex];
+      applyCaptainChanges(randomEvent.changes);
+      captainState.status = randomEvent.text;
+      addCaptainLog(randomEvent.text);
+    }
+
+    renderCaptainState();
+    saveCaptainState();
+  });
+});
+
+renderCaptainState();
   </script>
 </body>
 </html>
