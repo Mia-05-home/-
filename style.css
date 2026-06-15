@@ -572,3 +572,162 @@ main {
   display: block;
   border-radius: 18px;
 }
+
+.captain-pet-card {
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 26px;
+  background:
+    linear-gradient(135deg, rgba(255, 253, 248, 0.94), rgba(232, 241, 247, 0.74)),
+    var(--card);
+  box-shadow: 0 12px 32px var(--shadow);
+}
+
+.captain-pet-main {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.captain-pet-avatar {
+  width: 96px;
+  height: 96px;
+  display: grid;
+  place-items: center;
+  border-radius: 28px;
+  border: 1px solid var(--border);
+  background:
+    linear-gradient(145deg, #2F2A27 0%, #2F2A27 36%, #F4F0E8 37%, #F4F0E8 66%, #B77B45 67%),
+    var(--light-blue);
+  color: #FFFDF8;
+  font-size: 15px;
+  font-weight: 800;
+  box-shadow: 0 10px 24px var(--shadow);
+}
+
+.captain-pet-label {
+  margin: 0 0 8px;
+  color: #B58B34;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.captain-pet-status {
+  margin: 0;
+  color: #66594F;
+  font-size: 22px;
+  line-height: 1.65;
+}
+
+.captain-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+.captain-stat {
+  padding: 18px;
+  border: 1px solid rgba(234, 221, 203, 0.9);
+  border-radius: 22px;
+  background: rgba(255, 253, 248, 0.76);
+}
+
+.captain-stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: var(--gray-blue);
+  font-weight: 700;
+}
+
+.captain-stat-top strong {
+  color: #8F6B3E;
+  font-size: 22px;
+}
+
+.captain-stat-bar {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--sub-bg);
+}
+
+.captain-stat-bar span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--gold), var(--peach));
+  transition: width 0.25s ease;
+}
+
+.captain-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.captain-actions button {
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  padding: 12px 18px;
+  background: rgba(255, 253, 248, 0.9);
+  color: #8F6B3E;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 18px var(--shadow);
+  transition: all 0.25s ease;
+}
+
+.captain-actions button:hover {
+  transform: translateY(-3px);
+  background: var(--light-gold);
+}
+
+.captain-log {
+  margin-top: 24px;
+  padding: 20px;
+  border: 1px solid rgba(234, 221, 203, 0.9);
+  border-radius: 22px;
+  background: rgba(255, 253, 248, 0.68);
+}
+
+.captain-log ul {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.captain-log li {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(245, 239, 230, 0.72);
+  color: #66594F;
+  line-height: 1.65;
+}
+
+@media (max-width: 860px) {
+  .captain-pet-main,
+  .captain-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .captain-pet-avatar {
+    width: 84px;
+    height: 84px;
+  }
+
+  .captain-pet-status {
+    font-size: 19px;
+  }
+}
