@@ -553,11 +553,17 @@ main {
   background: rgba(255, 253, 248, 0.82);
   box-shadow: 0 12px 32px var(--shadow);
   overflow: hidden;
-  padding: 12px;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .home-map-image {
   width: 100%;
+  max-width: 620px;
+  max-height: 720px;
+  object-fit: contain;
   display: block;
   border-radius: 18px;
 }
