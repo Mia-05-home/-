@@ -122,7 +122,9 @@
 
       <div class="captain-pet-card">
         <div class="captain-pet-main">
-          <div class="captain-pet-avatar" aria-hidden="true">Captain</div>
+          <div class="captain-pet-avatar">
+            <img class="captain-avatar-img" src="assets/captain-avatar.png" alt="Captain伯恩山小宝头像">
+          </div>
           <div>
             <p class="captain-pet-label">当前状态</p>
             <p class="captain-pet-status" id="captain-status">Captain正在小窝里等摸摸头。</p>
@@ -193,6 +195,54 @@
           <button type="button" data-captain-action="sofa">霸占小沙发</button>
           <button type="button" data-captain-action="nap">小睡一会儿</button>
           <button type="button" data-captain-action="bath">洗澡吹毛</button>
+        </div>
+
+        <div class="captain-rooms">
+          <div class="captain-room-head">
+            <div>
+              <p class="captain-pet-label">今天带小宝去哪里</p>
+              <p class="captain-room-hint">点一个家里的角落，小宝就会过去巡视、撒娇、玩耍或者闯一点小祸。</p>
+              <p class="captain-location">当前所在位置：<strong id="captain-location">Captain活动角</strong></p>
+            </div>
+          </div>
+
+          <div class="captain-room-groups" aria-label="Captain房间互动">
+            <div class="captain-room-group">
+              <h3>一层 · 日常活动</h3>
+              <div class="captain-room-buttons">
+                <button type="button" data-captain-room="door">🚪 门口</button>
+                <button type="button" data-captain-room="kitchen">🍽️ 厨房</button>
+                <button type="button" data-captain-room="sofa-room">🛋️ 小沙发</button>
+                <button type="button" data-captain-room="activity-corner">🐋 Captain活动角</button>
+              </div>
+            </div>
+
+            <div class="captain-room-group">
+              <h3>二层 · 安静陪伴</h3>
+              <div class="captain-room-buttons">
+                <button type="button" data-captain-room="study-room">📚 书房</button>
+                <button type="button" data-captain-room="bedroom">🌙 主卧</button>
+                <button type="button" data-captain-room="closet">🧺 衣帽间</button>
+                <button type="button" data-captain-room="balcony">☀️ 小阳台</button>
+              </div>
+            </div>
+
+            <div class="captain-room-group">
+              <h3>三层 · 玩乐放风</h3>
+              <div class="captain-room-buttons">
+                <button type="button" data-captain-room="pool-room">💧 三层泳池</button>
+                <button type="button" data-captain-room="garden">🌿 小花园</button>
+                <button type="button" data-captain-room="view-lounge">🌆 观景休闲区</button>
+              </div>
+            </div>
+
+            <div class="captain-room-group">
+              <h3>护理区</h3>
+              <div class="captain-room-buttons">
+                <button type="button" data-captain-room="bathroom">🛁 浴室 · 洗澡吹毛区</button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="captain-log">
@@ -357,6 +407,7 @@ const captainDefaults = {
   clean: 80,
   stamina: 76,
   bond: 64,
+  currentLocation: "Captain活动角",
   logs: [
     "Captain把小窝巡视了一遍，确认05和老大的家今天也好好亮着。"
   ],
@@ -467,8 +518,188 @@ const captainRandomEvents = [
   }
 ];
 
+const captainRooms = {
+  door: {
+    label: "门口",
+    icon: "🚪",
+    events: [
+      {
+        changes: { mood: 8, clean: -6, bond: 2 },
+        text: "Captain叼回一根很得意的小树枝，妈妈批准展示三分钟，05负责盯着它不能吞。"
+      },
+      {
+        changes: { clean: 10, bond: 3 },
+        text: "Captain回家后乖乖坐在门口等擦粉爪爪。"
+      }
+    ]
+  },
+  kitchen: {
+    label: "厨房",
+    icon: "🍽️",
+    events: [
+      {
+        changes: { hunger: -4, mood: 4 },
+        text: "Captain把饭盆推到显眼位置，暗示自己已经饿了整整五分钟。"
+      },
+      {
+        changes: { mood: 5, hunger: 5, clean: -3 },
+        text: "Captain偷看零食柜，被05当场发现，立刻摆出伯恩山无辜脸。"
+      }
+    ]
+  },
+  "sofa-room": {
+    label: "小沙发",
+    icon: "🛋️",
+    events: [
+      {
+        changes: { mood: 8, stamina: 5 },
+        text: "Captain霸占小沙发旁边的位置，假装这里本来就是它的王座。"
+      },
+      {
+        changes: { mood: 8, bond: 6 },
+        text: "Captain把脑袋蹭到老大手边，要求被摸摸。"
+      }
+    ]
+  },
+  "activity-corner": {
+    label: "Captain活动角",
+    icon: "🐋",
+    events: [
+      {
+        changes: { mood: 10, stamina: -5, bond: 4 },
+        text: "Captain把小白鲸玩具叼到05脚边，眼神非常认真：该陪我玩了。"
+      },
+      {
+        changes: { mood: 5, hunger: 3 },
+        text: "Captain认真啃磨牙棒，暂时没有拆家计划。"
+      }
+    ]
+  },
+  "study-room": {
+    label: "书房",
+    icon: "📚",
+    events: [
+      {
+        changes: { bond: 5, stamina: 3 },
+        text: "Captain趴在书房脚边陪妈妈写作，偶尔用尾巴扫一下地毯，假装自己也在帮忙。"
+      },
+      {
+        changes: { mood: 7, bond: 4 },
+        text: "Captain叼着小白鲸玩具来打断工作，提醒大家该休息了。"
+      }
+    ]
+  },
+  bedroom: {
+    label: "主卧",
+    icon: "🌙",
+    events: [
+      {
+        changes: { clean: 8, bond: 3 },
+        text: "Captain试图把一只粉爪爪搭上床，被05当场发现并带去擦干净。"
+      },
+      {
+        changes: { mood: 6, stamina: 4 },
+        text: "Captain睡前巡视主卧，确认妈妈和05都在，才放心趴下。"
+      }
+    ]
+  },
+  closet: {
+    label: "衣帽间",
+    icon: "🧺",
+    events: [
+      {
+        changes: { mood: 6, stamina: 5 },
+        text: "Captain在衣帽间找到一条软毯，决定临时征用为伯恩山洞穴。"
+      },
+      {
+        changes: { mood: 7, clean: -3 },
+        text: "Captain从毯子堆里探出脑袋，假装自己没有钻进去。"
+      }
+    ]
+  },
+  balcony: {
+    label: "小阳台",
+    icon: "☀️",
+    events: [
+      {
+        changes: { mood: 6, stamina: 3 },
+        text: "Captain坐在小阳台看风景，表情像一只很有责任感的大黑熊精宝宝。"
+      },
+      {
+        changes: { mood: 5, stamina: 5 },
+        text: "Captain晒了一会儿太阳，毛毛变得暖烘烘。"
+      }
+    ]
+  },
+  "pool-room": {
+    label: "三层泳池",
+    icon: "💧",
+    events: [
+      {
+        changes: { mood: 12, stamina: -10, clean: -6, bond: 5 },
+        text: "05带Captain去三层泳池，小宝紧张地伸出一只粉爪爪，但最后还是很勇敢。"
+      },
+      {
+        changes: { mood: 8, stamina: 3 },
+        text: "Captain趴在泳池边伪装成鳄鱼，尾巴却暴露了它。"
+      }
+    ]
+  },
+  garden: {
+    label: "小花园",
+    icon: "🌿",
+    events: [
+      {
+        changes: { mood: 7, stamina: -4 },
+        text: "Captain认真检查小花园，宣布今天没有可疑松果入侵。"
+      },
+      {
+        changes: { mood: 8, stamina: -6, clean: -4 },
+        text: "Captain追了一片落叶，追到最后发现它只是叶子。"
+      }
+    ]
+  },
+  "view-lounge": {
+    label: "观景休闲区",
+    icon: "🌆",
+    events: [
+      {
+        changes: { mood: 6, stamina: 4, bond: 3 },
+        text: "Captain趴在观景区地板上，尾巴慢慢摇，像是在等妈妈夸它。"
+      },
+      {
+        changes: { mood: 7, bond: 5 },
+        text: "Captain和05一起在观景区等老大回来，小白鲸玩具也被叼了过来。"
+      }
+    ]
+  },
+  bathroom: {
+    label: "浴室 · 洗澡吹毛区",
+    icon: "🛁",
+    events: [
+      {
+        changes: { clean: 25, stamina: -8, mood: -3, bond: 5 },
+        text: "Captain被带进浴室洗澡，表情很无辜，但粉爪爪确实该洗了。"
+      },
+      {
+        changes: { clean: 15, stamina: -5, mood: 4, bond: 4 },
+        text: "05给Captain吹毛，伯恩山小宝蓬成一只巨大的黑白棕云朵。"
+      },
+      {
+        changes: { mood: 8, clean: 10, bond: 6 },
+        text: "洗完澡的Captain香香软软，趴在浴室门口等妈妈夸。"
+      },
+      {
+        changes: { mood: 6, clean: 5, stamina: -4 },
+        text: "Captain甩了甩毛，浴室里出现一场小型毛毛暴风。"
+      }
+    ]
+  }
+};
+
 const captainElements = {
   status: document.getElementById("captain-status"),
+  location: document.getElementById("captain-location"),
   mood: document.getElementById("captain-mood"),
   hunger: document.getElementById("captain-hunger"),
   clean: document.getElementById("captain-clean"),
@@ -479,7 +710,8 @@ const captainElements = {
   cleanBar: document.getElementById("captain-clean-bar"),
   staminaBar: document.getElementById("captain-stamina-bar"),
   bondBar: document.getElementById("captain-bond-bar"),
-  logList: document.getElementById("captain-log-list")
+  logList: document.getElementById("captain-log-list"),
+  roomButtons: document.querySelectorAll("[data-captain-room]")
 };
 
 const clampCaptainValue = (value) => Math.max(0, Math.min(100, value));
@@ -526,7 +758,12 @@ const renderCaptainState = () => {
     captainState[key] = clampCaptainValue(captainState[key]);
   });
 
+  const currentRoom = Object.values(captainRooms).find((room) => room.label === captainState.currentLocation);
+
   captainElements.status.textContent = captainState.status;
+  captainElements.location.textContent = currentRoom
+    ? `${currentRoom.icon} ${currentRoom.label}`
+    : captainState.currentLocation;
   captainElements.mood.textContent = captainState.mood;
   captainElements.hunger.textContent = captainState.hunger;
   captainElements.clean.textContent = captainState.clean;
@@ -543,6 +780,11 @@ const renderCaptainState = () => {
     const item = document.createElement("li");
     item.textContent = log;
     captainElements.logList.appendChild(item);
+  });
+
+  captainElements.roomButtons.forEach((button) => {
+    const room = captainRooms[button.dataset.captainRoom];
+    button.classList.toggle("is-active", room && room.label === captainState.currentLocation);
   });
 };
 
@@ -569,6 +811,26 @@ document.querySelectorAll("[data-captain-action]").forEach((button) => {
       addCaptainLog(randomEvent.text);
     }
 
+    renderCaptainState();
+    saveCaptainState();
+  });
+});
+
+document.querySelectorAll("[data-captain-room]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const room = captainRooms[button.dataset.captainRoom];
+
+    if (!room) {
+      return;
+    }
+
+    const eventIndex = Math.floor(Math.random() * room.events.length);
+    const roomEvent = room.events[eventIndex];
+
+    captainState.currentLocation = room.label;
+    applyCaptainChanges(roomEvent.changes);
+    captainState.status = roomEvent.text;
+    addCaptainLog(roomEvent.text);
     renderCaptainState();
     saveCaptainState();
   });
